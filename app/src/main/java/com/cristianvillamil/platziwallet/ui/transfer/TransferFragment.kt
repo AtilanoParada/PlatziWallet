@@ -42,7 +42,7 @@ class TransferFragment : Fragment() {
         dashboardViewModel =
             ViewModelProviders.of(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_transfer, container, false)
-        dashboardViewModel.text.observe(this, Observer {
+        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
         })
         return root
     }
@@ -52,6 +52,9 @@ class TransferFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initAmountInputEditText()
         initRecyclerView()
+        transferButton.setOnClickListener {
+
+        }
     }
 
     private fun initRecyclerView() {
