@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cristianvillamil.platziwallet.R
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_loans.*
 class LoansFragment : Fragment() {
 
     private val adapter = LoansAdapter()
+    private var loansViewModel : LoansViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +35,15 @@ class LoansFragment : Fragment() {
             AccelerateDecelerateInterpolator(),
             300
         )
+        @Suppress("DEPRECATION")
+        loansViewModel = (ViewModelProviders.of(this)[LoansViewModel::class.java])
+        loansViewModel!!.getPercentageLiveData().observe(viewLifecycleOwner, Observer {
+            percentageText.text = it
+        })
+        loansViewModel!!.getLoansListLiveData().observe(viewLifecycleOwner, Observer {
+            adapter.setData(it)
+        })
+        loansViewModel!!.changeValues()
     }
 
     private fun initRecyclerView() {
